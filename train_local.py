@@ -2,6 +2,7 @@ import os
 import mxnet as mx
 import logging
 import numpy as np
+import time
 from sklearn.model_selection import train_test_split
 
 logging.getLogger().setLevel(logging.DEBUG)
@@ -40,6 +41,7 @@ model = mx.mod.Module(
     data_names=['data'],
     label_names = ['lin_reg_label']# network structure
 )
+time1 = time.time()
 
 model.fit(train_iter, eval_iter,
             optimizer_params={
@@ -49,3 +51,6 @@ model.fit(train_iter, eval_iter,
             batch_end_callback
                  = mx.callback.Speedometer(batch_size, 20),
             kvstore="device")
+
+time2 = time.time()
+print('training took %0.3f ms' % ((time2 - time1) * 1000.0))
